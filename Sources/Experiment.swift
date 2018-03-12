@@ -67,6 +67,9 @@ public struct Experiment {
     /// usually be overridden to point to a store visible by the app and its extensions.
     public static var defaults = UserDefaults.standard
 
+    /// Method for logging debug info. Defaults to `print`.
+    public static var debugLog: (String) -> () = { print($0) }
+
     /// Name for the experiment. By convention, it should be a `camelCaseValue`.
     /// It will be altered for use as a key in storage.
     public private(set) var name: String
@@ -89,6 +92,62 @@ public struct Experiment {
         return Experiment(named: name)
     }
 
+    /// Set experiment values from a URL. Useful for giving testers specialized URLs to
+    /// enable experiments on a device.
+    ///
+    /// Handle incoming URL:
+    ///
+    ///    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    ///        if Experiment.configure(from: url) {
+    ///            return true
+    ///        }
+    ///        // Your custom URL code
+    ///        return false
+    ///    }
+    ///
+    /// Turn it on:
+    ///
+    ///     myapp://experiments/configure?visibleResponseTime=true
+    ///
+    /// Turn it off:
+    ///
+    ///     myapp://experiments/configure?visibleResponseTime=false
+    ///
+    /// Delete it:
+    ///
+    ///     myapp://experiments/configure?visibleResponseTime=
+    ///
+    public static func configure(from url: URL) -> Bool {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
+        guard let host = components.host, host == "experiments" else { return false }
+
+        let pathItems = components.path.components(separatedBy: "/").filter { $0 != "" }
+        guard let path = pathItems.first, path == "configure" else { return false }
+
+        for item in components.queryItems! {
+            let key = storageKey(for: item.name)
+            guard let value = item.value else {
+                defaults.removeObject(forKey: key)
+                debugLog("at=experiment-from-url action=remove name=\(key)")
+                continue
+            }
+            if let bool = Bool(value) {
+                defaults.set(bool, forKey: key)
+            } else if let int = Int(value) {
+                defaults.set(int, forKey: key)
+            } else if let float = Float(value) {
+                defaults.set(float, forKey: key)
+            } else if let urlValue = URL(string: value), urlValue.scheme != nil, urlValue.host != nil {
+                defaults.set(urlValue, forKey: key)
+            } else {
+                defaults.set(value, forKey: key)
+            }
+            debugLog("at=experiment-from-url action=set name=\(item.name) value=\(value)")
+        }
+
+        return true
+    }
+
     /// Removes all persisted settings for this experiment.
     public func remove() {
         store.removeObject(forKey: storageKey)
@@ -102,7 +161,7 @@ public struct Experiment {
 
     /// A variation of `name` to reduce the likelihood of collisions in UserDefaults.
     private var storageKey: String {
-        return "\(name)_experiment"
+        return Experiment.storageKey(for: name)
     }
 
 
@@ -120,6 +179,12 @@ public struct Experiment {
     private init(named name: String, store: UserDefaults = Experiment.defaults) {
         self.name = name
         self.store = store
+    }
+
+
+    // MARK: Private Methods
+    private static func storageKey(for name: String) -> String {
+        return "\(name)_experiment"
     }
 
 }
