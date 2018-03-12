@@ -59,7 +59,7 @@
 				B0F5A0E92056FC33001230E9 /* Package.swift */,
 				B0F5A0CE2056F964001230E9 /* Sources */,
 				B0F5A0E62056FA09001230E9 /* Supporting Files */,
-				B0F5A0D92056F964001230E9 /* ExperimentTests */,
+				B0F5A0D92056F964001230E9 /* Tests */,
 				B0F5A0CD2056F964001230E9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,13 +81,13 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		B0F5A0D92056F964001230E9 /* ExperimentTests */ = {
+		B0F5A0D92056F964001230E9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				B0F5A0DA2056F964001230E9 /* ExperimentTests.swift */,
 				B0F5A0DC2056F964001230E9 /* Info.plist */,
 			);
-			path = ExperimentTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		B0F5A0E62056FA09001230E9 /* Supporting Files */ = {
@@ -403,7 +403,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L4Y7P64253;
-				INFOPLIST_FILE = ExperimentTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.daylogger.ExperimentTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -418,7 +418,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L4Y7P64253;
-				INFOPLIST_FILE = ExperimentTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.daylogger.ExperimentTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

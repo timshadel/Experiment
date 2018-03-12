@@ -117,7 +117,9 @@ public struct Experiment {
     ///
     ///     myapp://experiments/configure?visibleResponseTime=
     ///
-    public static func configure(from url: URL) -> Bool {
+    @discardableResult
+    public static func configure(from url: URL?) -> Bool {
+        guard let url = url else { return false }
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return false }
         guard let host = components.host, host == "experiments" else { return false }
 
