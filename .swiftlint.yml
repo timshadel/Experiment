@@ -1,0 +1,11 @@
+disabled_rules:
+  - nesting
+
+vertical_whitespace:
+  max_empty_lines: 2
+
+custom_rules:
+  mark_spacing:
+    included: ".*\\.swift"
+    name: "MARK spacing"
+    regex: "[^\\n{]\\n?\\n *// MARK:"

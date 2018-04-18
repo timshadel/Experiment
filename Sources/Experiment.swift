@@ -23,7 +23,7 @@ public struct Experiment {
 
     /// Method for logging debug info. Defaults to `print`. Overwrite this with a function
     /// that ties into your logging system.
-    public static var debugLog: (String) -> () = { print($0) }
+    public static var debugLog: (String) -> Void = { print($0) }
 
 
     // MARK: Public API
@@ -103,7 +103,7 @@ extension Experiment {
     ///
     /// Handle incoming URL:
     ///
-    ///    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    ///    func application(_ app: UIApplication, open url: URL, options: ...) -> Bool {
     ///        if Experiment.configure(from: url) {
     ///            return true
     ///        }

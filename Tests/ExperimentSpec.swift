@@ -95,7 +95,8 @@ class WhenExperimentIsConfiguredWithAURL: XCTestCase {
 
     // it can be configured with a custom host
     func testExperimentCanBeConfiguredWithACustomHost() {
-        XCTAssertTrue(Experiment.configure(from: URL(string: "myapp://customHost/configure?configFailure=false"), host: "customHost"))
+        let url = URL(string: "myapp://customHost/configure?configFailure=false")
+        XCTAssertTrue(Experiment.configure(from: url, host: "customHost"))
     }
 
     // it can remove an experiment by URL with an empty query value
@@ -150,7 +151,8 @@ class WhenExperimentConfigurationFails: XCTestCase {
     func testExperimentFailsWhenAnySettingIsNotBoolean() {
         let validValue = "validValue"
         let invalidValue = "invalidValue"
-        XCTAssertFalse(Experiment.configure(from: URL(string: "myapp://experiments/configure?\(validValue)=true&\(invalidValue)=7")))
+        let url = URL(string: "myapp://experiments/configure?\(validValue)=true&\(invalidValue)=7")
+        XCTAssertFalse(Experiment.configure(from: url))
         XCTAssertFalse(Experiment.named(validValue).exists)
         XCTAssertFalse(Experiment.named(invalidValue).exists)
     }
