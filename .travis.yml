@@ -1,0 +1,13 @@
+language: objective-c
+osx_image: xcode9.3
+
+before_install:
+  - brew bundle
+  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+
+script:
+  - set -o pipefail
+  - xcodebuild -project Experiment.xcodeproj -scheme Experiment -sdk iphonesimulator -destination "platform=iOS Simulator,OS=11.3,name=iPhone 8" test | xcpretty -c
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -J '^Experiment$'
